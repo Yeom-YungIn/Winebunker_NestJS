@@ -1,7 +1,8 @@
-import {Body, Controller, Delete, Get, Patch, Post, Query} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, Query} from '@nestjs/common';
 import {ResourceService} from "./resource.service";
 import {ResourceDto} from "./dto/resource.dto";
 import {Resource} from "./entity/resource.entity";
+import {ResourceObjValidatePipe} from "./pipe/resource-obj-validate.pipe";
 
 @Controller('resource')
 export class ResourceController {
@@ -16,8 +17,13 @@ export class ResourceController {
     }
 
     @Get('/get')
-    getResource(@Query('id') id: string): Promise<Resource> {
+    getResource(@Query('id', ParseUUIDPipe) id: string): Promise<Resource> {
         return this.resourceService.getResource(id);
+    }
+
+    @Get('/search')
+    searchResource(@Query('search') search: string): Promise<Resource[]> {
+        return this.resourceService.searchResource(search);
     }
 
     @Post('/save')
@@ -27,12 +33,13 @@ export class ResourceController {
     }
 
     @Patch('/update')
-    updateResource(@Body() id: string, resourceDto: ResourceDto): Promise<Object> {
-        return this.resourceService.updateResource(id, resourceDto);
+    updateResource(@Body(ResourceObjValidatePipe) resourceDto: ResourceDto): Promise<Object> {
+        console.log(resourceDto)
+        return this.resourceService.updateResource(resourceDto);
     }
 
-    @Delete()
-    deleteResource(@Body() id: string): Promise<Object> {
+    @Delete('/delete')
+    deleteResource(@Body('id', ParseUUIDPipe) id: string): Promise<Object> {
         return this.resourceService.deleteResource(id);
     }
 }

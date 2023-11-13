@@ -1,6 +1,10 @@
-import {IsDate, IsString} from "class-validator";
+import {IsDate, IsNotEmpty, IsOptional, IsString} from "class-validator";
 export class ResourceDto {
     @IsString()
+    id: string;
+
+    @IsString()
+    @IsOptional()
     vinName: string;
 
     @IsString()
