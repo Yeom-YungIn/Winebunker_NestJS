@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Post, Query} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Patch, Post, Query} from '@nestjs/common';
 import {ResourceService} from "./resource.service";
 import {ResourceDto} from "./dto/resource.dto";
 import {Resource} from "./entity/resource.entity";
@@ -15,11 +15,24 @@ export class ResourceController {
         return this.resourceService.getAllResource(page);
     }
 
-    @Post('/save')
-    saveResource(@Body(
+    @Get('/get')
+    getResource(@Query('id') id: string): Promise<Resource> {
+        return this.resourceService.getResource(id);
+    }
 
-    ) resourceDto: ResourceDto): Promise<Object> {
+    @Post('/save')
+    saveResource(@Body() resourceDto: ResourceDto): Promise<Object> {
         console.log(resourceDto)
         return this.resourceService.saveResource(resourceDto)
+    }
+
+    @Patch('/update')
+    updateResource(@Body() id: string, resourceDto: ResourceDto): Promise<Object> {
+        return this.resourceService.updateResource(id, resourceDto);
+    }
+
+    @Delete()
+    deleteResource(@Body() id: string): Promise<Object> {
+        return this.resourceService.deleteResource(id);
     }
 }

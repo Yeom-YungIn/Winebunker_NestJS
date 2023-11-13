@@ -9,17 +9,25 @@ export class ResourceService {
     constructor(
         @InjectRepository(Resource)
         private readonly resourceRepository: Repository<Resource>
-    ) {
-    }
+    ) {}
 
     async getAllResource(page: number = 1): Promise<Resource[]> {
         const take: number = 1;
-        const result = await this.resourceRepository.findAndCount({
+        const found = await this.resourceRepository.findAndCount({
             take,
-            skip: (page - 1) * take
+            skip: page
         });
-        console.log(result);
+        console.log(found);
         return this.resourceRepository.find();
+    }
+
+    async getResource(id: string): Promise<Resource> {
+        const found = await this.resourceRepository.findOneBy({id});
+        return found;
+    }
+
+    async searchResource(resourceDto: ResourceDto): Promise<Resource[]> {
+        return;
     }
 
     async saveResource(resourceDto: ResourceDto): Promise<Object> {
@@ -48,5 +56,13 @@ export class ResourceService {
         })
 
         return this.resourceRepository.save(resource)
+    }
+
+    async updateResource(id: string, resourceDto: ResourceDto): Promise<Object> {
+        return;
+    }
+
+    async deleteResource(id: string): Promise<Object> {
+        return;
     }
 }
