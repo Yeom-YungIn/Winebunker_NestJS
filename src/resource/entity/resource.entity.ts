@@ -1,4 +1,5 @@
-import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import {Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import {User} from "../../auth/entity/user.entity";
 
 @Entity('resource')
 export class Resource {
@@ -34,5 +35,8 @@ export class Resource {
 
     @UpdateDateColumn()
     modified: Date;
+
+    @ManyToOne(() => User, User => User.resource, {eager: true})
+    user: User;
 
 }

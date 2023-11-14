@@ -1,5 +1,5 @@
 import {ArgumentMetadata, BadRequestException, PipeTransform} from "@nestjs/common";
-import {isNumber, isUUID} from "class-validator";
+import {isNumber} from "class-validator";
 import {Capacity} from "../enum/capacity.enum";
 
 export class ResourceObjValidatePipe implements PipeTransform {
@@ -9,6 +9,7 @@ export class ResourceObjValidatePipe implements PipeTransform {
         Capacity.Capacity300,
         Capacity.Capacity750,
     ]
+
     transform(value: any, metadata: ArgumentMetadata): any {
         console.log(value);
 

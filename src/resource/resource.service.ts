@@ -1,9 +1,9 @@
-import {BadRequestException, Injectable, InternalServerErrorException, NotFoundException} from '@nestjs/common';
+import {Injectable, NotFoundException} from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
 import {Resource} from "./entity/resource.entity";
 import {Repository} from "typeorm";
 import {ResourceDto} from "./dto/resource.dto";
-import {isUUID} from "class-validator";
+import {User} from "../auth/entity/user.entity";
 
 @Injectable()
 export class ResourceService {
@@ -12,14 +12,12 @@ export class ResourceService {
         private readonly resourceRepository: Repository<Resource>
     ) {}
 
-    async getAllResource(page: number = 1): Promise<Resource[]> {
-        const take: number = 1;
-        const found = await this.resourceRepository.findAndCount({
-            take,
-            skip: page
+    async getAllResource(page: number = 1): Promise<[Resource[], number]> {
+        const pageSize: number = 5;
+        return await this.resourceRepository.findAndCount({
+            skip: page * pageSize,
+            take: pageSize,
         });
-        console.log(found);
-        return this.resourceRepository.find();
     }
 
     async getResource(id: string): Promise<Resource> {
@@ -35,8 +33,7 @@ export class ResourceService {
         return;
     }
 
-    async saveResource(resourceDto: ResourceDto): Promise<Object> {
-        console.log(resourceDto)
+    async saveResource(resourceDto: ResourceDto, user: User): Promise<Object> {
         const {
             vinName,
             vinNameKor,
@@ -57,14 +54,13 @@ export class ResourceService {
             purchaseDate: new Date(purchaseDate),
             issued: new Date(),
             modified: new Date(),
-            publisherId: 'tbd'
+            publisherId: user.userName
         })
 
         return this.resourceRepository.save(resource)
     }
 
     async updateResource(resourceDto: ResourceDto): Promise<Object> {
-        console.log(resourceDto)
         const {
             id,
             vinName,
@@ -87,7 +83,6 @@ export class ResourceService {
         }).where({
             id
         }).execute();
-        console.log(updateResource)
         if (updateResource.affected) {
             return {result: "success"};
         }
@@ -97,7 +92,6 @@ export class ResourceService {
         const found = await this.getResource(id);
 
         const deleteResource = await this.resourceRepository.delete({id: found.id});
-        console.log(deleteResource);
         if (deleteResource.affected) {
             return {result: "success"}
         }
