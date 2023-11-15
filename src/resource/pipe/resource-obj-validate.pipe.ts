@@ -13,14 +13,6 @@ export class ResourceObjValidatePipe implements PipeTransform {
     transform(value: any, metadata: ArgumentMetadata): any {
         console.log(value);
 
-        if (value.vinName) {
-            value.vinName = value.vinName.toUpperCase();
-        }
-
-        if (!value.vinNameKor) {
-            throw new BadRequestException("vinNameKor is Required");
-        }
-
         if (value.price) {
             this.isPrice(value.price);
         }

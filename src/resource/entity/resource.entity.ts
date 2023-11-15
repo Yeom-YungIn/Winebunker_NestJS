@@ -1,22 +1,30 @@
-import {Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    ManyToOne,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn
+} from "typeorm";
 import {User} from "../../auth/entity/user.entity";
+import {Vin} from "../../vin/entity/vin.entity";
 
 @Entity('resource')
 export class Resource {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
+    @Column({name: 'vin_sn'})
+    vinSn: number;
+
     @Column({name: 'publisher_id'})
     publisherId: string;
 
-    @Column({name: 'vin_name'})
-    vinName: string;
-
-    @Column({name: 'vin_name_kor'})
-    vinNameKor: string;
-
     @Column()
     price: number;
+
+    @Column()
+    vintage: number;
 
     @Column()
     store: string;
@@ -38,5 +46,8 @@ export class Resource {
 
     @ManyToOne(() => User, User => User.resource, {eager: true})
     user: User;
+
+    @ManyToOne(() => Vin, User => User.resource, {eager: true})
+    vin: Vin;
 
 }

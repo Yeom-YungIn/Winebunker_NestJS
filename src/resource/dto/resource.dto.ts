@@ -1,14 +1,13 @@
-import {IsDate, IsNotEmpty, IsOptional, IsString} from "class-validator";
+import {IsDate, IsNumber, IsString} from "class-validator";
 export class ResourceDto {
     @IsString()
     id: string;
 
-    @IsString()
-    @IsOptional()
-    vinName: string;
+    @IsNumber()
+    vinSn: number;
 
-    @IsString()
-    vinNameKor: string;
+    @IsNumber()
+    vintage: number;
 
     @IsString()
     price: number;
@@ -24,6 +23,4 @@ export class ResourceDto {
 
     @IsDate()
     purchaseDate: Date;
-
-
 }

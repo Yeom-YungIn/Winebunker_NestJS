@@ -48,4 +48,9 @@ export class ResourceController {
     deleteResource(@Body('id', ParseUUIDPipe) id: string): Promise<Object> {
         return this.resourceService.deleteResource(id);
     }
+
+    @Get('/mypage')
+    userResource(@GetUser() user: User): Promise<Resource[]> {
+        return this.resourceService.userResource(user);
+    }
 }

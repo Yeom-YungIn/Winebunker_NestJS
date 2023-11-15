@@ -35,8 +35,8 @@ export class ResourceService {
 
     async saveResource(resourceDto: ResourceDto, user: User): Promise<Object> {
         const {
-            vinName,
-            vinNameKor,
+            vinSn,
+            vintage,
             price,
             store,
             capacity,
@@ -45,8 +45,8 @@ export class ResourceService {
         } = resourceDto;
 
         const resource = this.resourceRepository.create({
-            vinName,
-            vinNameKor,
+            vinSn,
+            vintage,
             price,
             store,
             capacity,
@@ -63,8 +63,6 @@ export class ResourceService {
     async updateResource(resourceDto: ResourceDto): Promise<Object> {
         const {
             id,
-            vinName,
-            vinNameKor,
             price,
             store,
             capacity,
@@ -73,8 +71,6 @@ export class ResourceService {
         } = resourceDto;
 
         const updateResource = await this.resourceRepository.createQueryBuilder().update(Resource).set({
-            vinName,
-            vinNameKor,
             price,
             store,
             capacity,
@@ -95,5 +91,12 @@ export class ResourceService {
         if (deleteResource.affected) {
             return {result: "success"}
         }
+    }
+
+    async userResource(user: User): Promise<Resource[]> {
+        const {userName} = user;
+        return await this.resourceRepository.find({
+            where: {publisherId: userName}
+        })
     }
 }
