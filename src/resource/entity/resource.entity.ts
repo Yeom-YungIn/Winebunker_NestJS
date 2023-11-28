@@ -4,7 +4,8 @@ import {
     Entity,
     ManyToOne,
     PrimaryGeneratedColumn,
-    UpdateDateColumn
+    UpdateDateColumn,
+    JoinColumn
 } from "typeorm";
 import {User} from "../../auth/entity/user.entity";
 import {Vin} from "../../vin/entity/vin.entity";
@@ -44,10 +45,12 @@ export class Resource {
     @UpdateDateColumn()
     modified: Date;
 
-    @ManyToOne(() => User, User => User.resource, {eager: true})
+    @ManyToOne(() => User, User => User.id, {eager: false})
+    @JoinColumn({name: "id"})
     user: User;
 
-    @ManyToOne(() => Vin, User => User.resource, {eager: true})
+    @ManyToOne(() => Vin, (Vin) => Vin.resource, {eager: false})
+    @JoinColumn({name: 'vin_sn'})
     vin: Vin;
 
 }

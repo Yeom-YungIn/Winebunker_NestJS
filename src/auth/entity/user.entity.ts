@@ -2,6 +2,7 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    JoinColumn,
     OneToMany,
     PrimaryGeneratedColumn,
     Unique,
@@ -27,6 +28,7 @@ export class User{
     @UpdateDateColumn()
     modified: Date;
 
-    @OneToMany(() => Resource, Resource => Resource.user, {eager: false})
+    @OneToMany(() => Resource, Resource => Resource.vin, {eager: false})
+    @JoinColumn({name: 'publisher_id'})
     resource: Resource[];
 }

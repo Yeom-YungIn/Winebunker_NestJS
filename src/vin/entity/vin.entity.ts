@@ -15,6 +15,6 @@ export class Vin {
     @Column()
     region: string;
 
-    @OneToMany(() => Resource, Resource => Resource.user, {eager: false})
+    @OneToMany(() => Resource, Resource => Resource.vin, {eager: false})
     resource: Resource[];
 }

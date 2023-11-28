@@ -20,6 +20,14 @@ export class ResourceService {
         });
     }
 
+    async getResourceListWithVin(): Promise<Object> {
+        return await this.resourceRepository.find({
+            relations: {
+                vin: true,
+            }
+        })
+    }
+
     async getResource(id: string): Promise<Resource> {
         const found = await this.resourceRepository.findOneBy({id});
 

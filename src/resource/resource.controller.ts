@@ -6,9 +6,14 @@ import {ResourceObjValidatePipe} from "./pipe/resource-obj-validate.pipe";
 import {AuthGuard} from "@nestjs/passport";
 import {GetUser} from "../auth/decorator/get-user.decorator";
 import {User} from "../auth/entity/user.entity";
+import {
+    ApiTags,
+    ApiOperation
+} from '@nestjs/swagger';
 
+@ApiTags('리소스 API')
 @Controller('resource')
-@UseGuards(AuthGuard())
+// @UseGuards(AuthGuard())
 export class ResourceController {
     constructor(
         private readonly resourceService: ResourceService
@@ -16,8 +21,15 @@ export class ResourceController {
     }
 
     @Get()
+    @ApiOperation({summary: "리소스 목록 조회", description: "리소스 데이터만 조회"})
     getAllResource(@Query('page') page: number = 1): Promise<[Resource[], number]> {
         return this.resourceService.getAllResource(page);
+    }
+
+    @Get('/vin')
+    @ApiOperation({summary: "리소스 & 와인 정보 목록 조회", description: "리소스 목록 (와인 정보 포함) 조회"})
+    getResourceListWithVin(): Promise<Object> {
+        return this.resourceService.getResourceListWithVin()
     }
 
     @Get('/get')
@@ -31,6 +43,7 @@ export class ResourceController {
     }
 
     @Post('/save')
+    @UseGuards(AuthGuard())
     saveResource(
         @Body() resourceDto: ResourceDto,
         @GetUser() user: User
