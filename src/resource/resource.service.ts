@@ -59,7 +59,7 @@ export class ResourceService {
             store,
             capacity,
             description,
-            purchaseDate: new Date(purchaseDate),
+            purchaseDate,
             issued: new Date(),
             modified: new Date(),
             publisherId: user.userName

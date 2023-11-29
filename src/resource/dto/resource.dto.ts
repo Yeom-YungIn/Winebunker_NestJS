@@ -1,4 +1,4 @@
-import {IsDate, IsNumber, IsString} from "class-validator";
+import {IsNumber, IsString} from "class-validator";
 export class ResourceDto {
     @IsString()
     id: string;
@@ -21,6 +21,6 @@ export class ResourceDto {
     @IsString()
     description: string;
 
-    @IsDate()
-    purchaseDate: Date;
+    @IsString()
+    purchaseDate: string;
 }

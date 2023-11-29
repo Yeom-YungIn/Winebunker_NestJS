@@ -37,7 +37,7 @@ export class Resource {
     description: string;
 
     @Column({name: 'purchase_date'})
-    purchaseDate: Date;
+    purchaseDate: string;
 
     @CreateDateColumn()
     issued: Date;
