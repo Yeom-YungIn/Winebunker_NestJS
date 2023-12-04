@@ -26,7 +26,7 @@ export class ResourceController {
         return this.resourceService.getAllResource(page);
     }
 
-    @Get('/vin')
+    @Get('/vin/list')
     @ApiOperation({summary: "리소스 & 와인 정보 목록 조회", description: "리소스 목록 (와인 정보 포함) 조회"})
     getResourceListWithVin(): Promise<Object> {
         return this.resourceService.getResourceListWithVin()
@@ -38,8 +38,8 @@ export class ResourceController {
     }
 
     @Get('/search')
-    searchResource(@Query('search') search: string): Promise<Resource[]> {
-        return this.resourceService.searchResource(search);
+    searchResource(@Query('searchVal') searchVal: string): Promise<Resource[]> {
+        return this.resourceService.searchResource(searchVal);
     }
 
     @Post('/save')

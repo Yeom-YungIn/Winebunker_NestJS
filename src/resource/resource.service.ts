@@ -20,12 +20,19 @@ export class ResourceService {
         });
     }
 
+
     async getResourceListWithVin(): Promise<Object> {
-        return await this.resourceRepository.find({
-            relations: {
-                vin: true,
-            }
-        })
+        const found = await this.resourceRepository
+            .createQueryBuilder('resource')
+            .innerJoinAndSelect('resource.vin', 'vin')
+            .addSelect('resource.id', 'id')
+            .addSelect('resource.price', 'price')
+            .addSelect('resource.store', 'store')
+            .addSelect('resource.purchaseDate', 'purchaseDate')
+            .addSelect('vin.vinNameKor', 'vinNameKor')
+            .getRawMany();
+
+        return found;
     }
 
     async getResource(id: string): Promise<Resource> {
@@ -37,7 +44,8 @@ export class ResourceService {
         return found;
     }
 
-    async searchResource(search: string): Promise<Resource[]> {
+    async searchResource(searchVal: string): Promise<Resource[]> {
+        console.log(searchVal)
         return;
     }
 
