@@ -22,7 +22,7 @@ export class ResourceService {
 
 
     async getResourceListWithVin(): Promise<Object> {
-        const found = await this.resourceRepository
+        return await this.resourceRepository
             .createQueryBuilder('resource')
             .innerJoinAndSelect('resource.vin', 'vin')
             .addSelect('resource.id', 'id')
@@ -31,8 +31,6 @@ export class ResourceService {
             .addSelect('resource.purchaseDate', 'purchaseDate')
             .addSelect('vin.vinNameKor', 'vinNameKor')
             .getRawMany();
-
-        return found;
     }
 
     async getResource(id: string): Promise<Resource> {
@@ -45,8 +43,16 @@ export class ResourceService {
     }
 
     async searchResource(searchVal: string): Promise<Resource[]> {
-        console.log(searchVal)
-        return;
+        return await this.resourceRepository
+            .createQueryBuilder('resource')
+            .innerJoinAndSelect('resource.vin', 'vin')
+            .addSelect('resource.id', 'id')
+            .addSelect('resource.price', 'price')
+            .addSelect('resource.store', 'store')
+            .addSelect('resource.purchaseDate', 'purchaseDate')
+            .addSelect('vin.vinNameKor', 'vinNameKor')
+            .where('vin.vinNameKor Like :vinNameKor',{vinNameKor: `%${searchVal}%`})
+            .getRawMany();
     }
 
     async saveResource(resourceDto: ResourceDto, user: User): Promise<Object> {
