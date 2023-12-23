@@ -20,6 +20,11 @@ export class VinController {
         return this.vinService.getVin(vinSn);
     }
 
+    @Get('/list')
+    searchVinList(@Query('vinNameKor') vinNameKor: string): Promise<Vin[]> {
+        return this.vinService.searchVin(vinNameKor);
+    }
+
     @Post('/save')
     saveVin(@Body() vinDto: VinDto): Promise<Object> {
         return this.vinService.saveVin(vinDto);

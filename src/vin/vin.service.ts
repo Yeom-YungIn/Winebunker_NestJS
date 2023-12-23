@@ -3,6 +3,7 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {Vin} from "./entity/vin.entity";
 import {Repository} from "typeorm";
 import {VinDto} from "./dto/vin.dto";
+import { Like } from 'typeorm';
 
 @Injectable()
 export class VinService {
@@ -18,6 +19,10 @@ export class VinService {
 
     async getVin(vinSn: number): Promise<Vin> {
         return this.vinRepository.findOneBy({vinSn});
+    }
+
+    async searchVin(vinNameKor: string): Promise<Vin[]> {
+        return this.vinRepository.findBy({vinNameKor: Like(`%${vinNameKor}%`)});
     }
 
     async saveVin(vinDto: VinDto): Promise<Vin> {
