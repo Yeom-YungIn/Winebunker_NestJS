@@ -11,7 +11,7 @@ export class AuthService {
     constructor(
         @InjectRepository(User)
         private readonly userRepository: Repository<User>,
-        private jwtSevice: JwtService,
+        private jwtService: JwtService,
 
     ) {
     }
@@ -31,16 +31,21 @@ export class AuthService {
         return user;
     }
 
-    async signIn(authCredentialDto: AuthCredentialDto): Promise<Object> {
+    async generateAccessToken(authCredentialDto: AuthCredentialDto): Promise<Object> {
         const {userName, password} = authCredentialDto;
         const user = await this.userRepository.findOneBy({userName});
         const compare = await bycrpt.compare(password, user.password);
         if (user && compare) {
             const payload = { userName }
-            const accessToken = this.jwtSevice.sign(payload);
-            return {result: 'Login Success', accessToken};
+            const accessToken = this.jwtService.sign(payload);
+            return {'result': 'Login Success', accessToken};
         }else {
             throw new UnauthorizedException();
         }
+    }
+
+    generateRefreshToken(authCredentialDto: AuthCredentialDto): string {
+        const {userName} = authCredentialDto;
+        return this.jwtService.sign({ sub: userName }, { expiresIn: '3h' }); // RefreshToken 만료 시간
     }
 }

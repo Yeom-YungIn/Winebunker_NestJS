@@ -13,7 +13,7 @@ import {
 
 @ApiTags('리소스 API')
 @Controller('resource')
-// @UseGuards(AuthGuard())
+@UseGuards(AuthGuard())
 export class ResourceController {
     constructor(
         private readonly resourceService: ResourceService
@@ -53,7 +53,6 @@ export class ResourceController {
 
     @Patch('/update')
     updateResource(@Body(ResourceObjValidatePipe) resourceDto: ResourceDto): Promise<Object> {
-        console.log(resourceDto)
         return this.resourceService.updateResource(resourceDto);
     }
 
