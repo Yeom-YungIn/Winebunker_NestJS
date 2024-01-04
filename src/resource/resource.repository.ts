@@ -1,0 +1,122 @@
+import {Injectable, NotFoundException} from "@nestjs/common";
+import {InjectRepository} from "@nestjs/typeorm";
+import {Resource} from "./entity/resource.entity";
+import {Repository} from "typeorm";
+import {ResourceDto} from "./dto/resource.dto";
+import {User} from "../auth/entity/user.entity";
+
+@Injectable()
+export class ResourceRepository {
+    constructor(
+        @InjectRepository(Resource)
+        private readonly repository: Repository<Resource>
+    ) {
+    }
+
+    async findAndCount(page: number, pageSize: number) {
+        return await this.repository.findAndCount({
+            skip: page * pageSize,
+            take: pageSize,
+        });
+    }
+
+    async getResourceListWithVin(): Promise<Object> {
+        return await this.repository
+            .createQueryBuilder('resource')
+            .innerJoinAndSelect('resource.vin', 'vin')
+            .addSelect('resource.id', 'id')
+            .addSelect('resource.price', 'price')
+            .addSelect('resource.store', 'store')
+            .addSelect('resource.purchaseDate', 'purchaseDate')
+            .addSelect('vin.vinNameKor', 'vinNameKor')
+            .getRawMany();
+    }
+
+    async getResource(id: string): Promise<Resource> {
+        const found = await this.repository.findOneBy({id});
+        if (!found) {
+            throw new NotFoundException();
+        }
+        return found;
+    }
+
+    async searchResource(searchVal: string) {
+        return await this.repository
+            .createQueryBuilder('resource')
+            .innerJoinAndSelect('resource.vin', 'vin')
+            .addSelect('resource.id', 'id')
+            .addSelect('resource.price', 'price')
+            .addSelect('resource.store', 'store')
+            .addSelect('resource.purchaseDate', 'purchaseDate')
+            .addSelect('vin.vinNameKor', 'vinNameKor')
+            .where('vin.vinNameKor Like :vinNameKor',{vinNameKor: `%${searchVal}%`})
+            .getRawMany();
+    }
+
+    async saveResource(resourceDto: ResourceDto, user: User): Promise<Object> {
+        const {
+            vinSn,
+            vintage,
+            price,
+            store,
+            capacity,
+            description,
+            purchaseDate
+        } = resourceDto;
+
+        const resource = this.repository.create({
+            vinSn,
+            vintage,
+            price,
+            store,
+            capacity,
+            description,
+            purchaseDate,
+            issued: new Date(),
+            modified: new Date(),
+            publisherId: user.userName
+        })
+
+        return this.repository.save(resource)
+    }
+
+    async updateResource(resourceDto: ResourceDto): Promise<Object> {
+        const {
+            id,
+            price,
+            store,
+            capacity,
+            description,
+            purchaseDate
+        } = resourceDto;
+
+        const updateResource = await this.repository.createQueryBuilder().update(Resource).set({
+            price,
+            store,
+            capacity,
+            description,
+            purchaseDate
+        }).where({
+            id
+        }).execute();
+
+        if (updateResource.affected) {
+            return {result: "success"};
+        }
+    }
+
+    async deleteResource(id: string): Promise<Object> {
+        const deleteResource = await this.repository.delete({id});
+        if (deleteResource.affected) {
+            return {result: "success"}
+        }
+    }
+
+    async userResource(user: User): Promise<Resource[]> {
+        const {userName} = user;
+        return await this.repository.find({
+            where: {publisherId: userName}
+        })
+    }
+
+}

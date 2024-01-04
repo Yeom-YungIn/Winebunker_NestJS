@@ -1,124 +1,50 @@
-import {Injectable, NotFoundException} from '@nestjs/common';
+import {Injectable} from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
 import {Resource} from "./entity/resource.entity";
-import {Repository} from "typeorm";
 import {ResourceDto} from "./dto/resource.dto";
 import {User} from "../auth/entity/user.entity";
+import {ResourceRepository} from "./resource.repository";
 
 @Injectable()
 export class ResourceService {
     constructor(
         @InjectRepository(Resource)
-        private readonly resourceRepository: Repository<Resource>
+        private readonly resourceRepository: ResourceRepository
     ) {}
 
     async getAllResource(page: number = 1): Promise<[Resource[], number]> {
         const pageSize: number = 5;
-        return await this.resourceRepository.findAndCount({
-            skip: page * pageSize,
-            take: pageSize,
-        });
+        return await this.resourceRepository.findAndCount(page, pageSize);
     }
 
 
     async getResourceListWithVin(): Promise<Object> {
-        return await this.resourceRepository
-            .createQueryBuilder('resource')
-            .innerJoinAndSelect('resource.vin', 'vin')
-            .addSelect('resource.id', 'id')
-            .addSelect('resource.price', 'price')
-            .addSelect('resource.store', 'store')
-            .addSelect('resource.purchaseDate', 'purchaseDate')
-            .addSelect('vin.vinNameKor', 'vinNameKor')
-            .getRawMany();
+        return this.resourceRepository.getResourceListWithVin()
     }
 
     async getResource(id: string): Promise<Resource> {
-        const found = await this.resourceRepository.findOneBy({id});
-
-        if (!found) {
-            throw new NotFoundException();
-        }
-        return found;
+        return await this.resourceRepository.getResource(id);
     }
 
     async searchResource(searchVal: string): Promise<Resource[]> {
-        return await this.resourceRepository
-            .createQueryBuilder('resource')
-            .innerJoinAndSelect('resource.vin', 'vin')
-            .addSelect('resource.id', 'id')
-            .addSelect('resource.price', 'price')
-            .addSelect('resource.store', 'store')
-            .addSelect('resource.purchaseDate', 'purchaseDate')
-            .addSelect('vin.vinNameKor', 'vinNameKor')
-            .where('vin.vinNameKor Like :vinNameKor',{vinNameKor: `%${searchVal}%`})
-            .getRawMany();
+        return this.resourceRepository.searchResource(searchVal);
     }
 
     async saveResource(resourceDto: ResourceDto, user: User): Promise<Object> {
-        const {
-            vinSn,
-            vintage,
-            price,
-            store,
-            capacity,
-            description,
-            purchaseDate
-        } = resourceDto;
-
-        const resource = this.resourceRepository.create({
-            vinSn,
-            vintage,
-            price,
-            store,
-            capacity,
-            description,
-            purchaseDate,
-            issued: new Date(),
-            modified: new Date(),
-            publisherId: user.userName
-        })
-
-        return this.resourceRepository.save(resource)
+        return this.resourceRepository.saveResource(resourceDto, user)
     }
 
     async updateResource(resourceDto: ResourceDto): Promise<Object> {
-        const {
-            id,
-            price,
-            store,
-            capacity,
-            description,
-            purchaseDate
-        } = resourceDto;
-
-        const updateResource = await this.resourceRepository.createQueryBuilder().update(Resource).set({
-            price,
-            store,
-            capacity,
-            description,
-            purchaseDate
-        }).where({
-            id
-        }).execute();
-        if (updateResource.affected) {
-            return {result: "success"};
-        }
+        return await this.resourceRepository.updateResource(resourceDto);
     }
 
     async deleteResource(id: string): Promise<Object> {
         const found = await this.getResource(id);
 
-        const deleteResource = await this.resourceRepository.delete({id: found.id});
-        if (deleteResource.affected) {
-            return {result: "success"}
-        }
+        return await this.resourceRepository.deleteResource(found.id);
     }
 
     async userResource(user: User): Promise<Resource[]> {
-        const {userName} = user;
-        return await this.resourceRepository.find({
-            where: {publisherId: userName}
-        })
+        return await this.resourceRepository.userResource(user);
     }
 }

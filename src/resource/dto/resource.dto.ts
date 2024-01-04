@@ -9,7 +9,7 @@ export class ResourceDto {
     @IsNumber()
     vintage: number;
 
-    @IsString()
+    @IsNumber()
     price: number;
 
     @IsString()
