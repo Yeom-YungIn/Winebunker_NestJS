@@ -10,7 +10,8 @@ import { VinModule } from './vin/vin.module';
     TypeOrmModule.forRoot(typeORMConfig),
     AuthModule,
     ResourceModule,
-    VinModule],
+    VinModule
+  ],
   controllers: [],
   providers: [],
 })

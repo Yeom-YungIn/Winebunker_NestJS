@@ -7,6 +7,6 @@ import {Vin} from "./entity/vin.entity";
 @Module({
   imports: [TypeOrmModule.forFeature([Vin])],
   controllers: [VinController],
-  providers: [VinService]
+  providers: [VinService],
 })
 export class VinModule {}

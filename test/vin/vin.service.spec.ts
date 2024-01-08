@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { VinService } from './vin.service';
+import { VinService } from '../../src/vin/vin.service';
 
 describe('VinService', () => {
   let service: VinService;

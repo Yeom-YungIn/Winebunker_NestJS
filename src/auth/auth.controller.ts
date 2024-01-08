@@ -10,18 +10,15 @@ export class AuthController {
 
     @Post('/signup')
     signUp(@Body(ValidationPipe) authCredentialDto: AuthCredentialDto): Promise<User> {
-        console.log(authCredentialDto);
         return this.authService.signUp(authCredentialDto);
     }
 
     @Post('/login')
-    // @UsePipes(new ValidationPipe({ transform: true }))
-    async logIn(@Body() authCredentialDto:AuthCredentialDto, @Res() res) {
+    async logIn(@Body() authCredentialDto: AuthCredentialDto, @Res() res) {
         const accessToken = await this.authService.generateAccessToken(authCredentialDto);
         const refreshToken = this.authService.generateRefreshToken(authCredentialDto);
-
-        res.cookie('refreshToken', refreshToken, {httpOnly: true})
-
-        res.send(accessToken);
+        res.cookie('refreshToken', refreshToken, { httpOnly: true });
+        res.json(accessToken)
     }
+
 }

@@ -46,6 +46,6 @@ export class AuthService {
 
     generateRefreshToken(authCredentialDto: AuthCredentialDto): string {
         const {userName} = authCredentialDto;
-        return this.jwtService.sign({ sub: userName }, { expiresIn: '3h' }); // RefreshToken 만료 시간
+        return this.jwtService.sign({ sub: userName }, { expiresIn: '3h' });
     }
 }

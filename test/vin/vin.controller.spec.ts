@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { VinController } from './vin.controller';
+import { VinController } from '../../src/vin/vin.controller';
 
 describe('VinController', () => {
   let controller: VinController;

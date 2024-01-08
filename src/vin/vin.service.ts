@@ -7,10 +7,10 @@ import { Like } from 'typeorm';
 
 @Injectable()
 export class VinService {
+
     constructor(
         @InjectRepository(Vin)
-        private readonly vinRepository: Repository<Vin>
-    ) {
+        private readonly vinRepository: Repository<Vin>) {
     }
 
     async getAllVin(): Promise<Vin[]> {
@@ -26,7 +26,7 @@ export class VinService {
     }
 
     async saveVin(vinDto: VinDto): Promise<Vin> {
-        const { vinName, vinNameKor, region} = vinDto;
+        const {vinName, vinNameKor, region} = vinDto;
         const vin = await this.vinRepository.create({
             vinName,
             vinNameKor,
@@ -37,7 +37,7 @@ export class VinService {
     }
 
     async updateVin(vinDto: VinDto): Promise<Object> {
-        const { vinSn ,vinName, vinNameKor, region} = vinDto;
+        const {vinSn, vinName, vinNameKor, region} = vinDto;
 
         const updateVin = await this.vinRepository.createQueryBuilder().update(Vin).set({
             vinName,
@@ -61,5 +61,4 @@ export class VinService {
             return {result: "success"}
         }
     }
-
 }

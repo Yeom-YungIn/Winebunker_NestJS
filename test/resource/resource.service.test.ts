@@ -1,10 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ResourceService } from '../../src/resource/resource.service';
-import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Resource } from '../../src/resource/entity/resource.entity';
 import { NotFoundException } from '@nestjs/common';
-import { ResourceDto } from '../../src/resource/dto/resource.dto';
 
 describe('ResourceService', () => {
     let resourceService: ResourceService;
@@ -15,14 +13,14 @@ describe('ResourceService', () => {
             providers: [
                 ResourceService,
                 {
-                    provide: getRepositoryToken(Resource),
+                    provide: Repository<Resource>,
                     useClass: Repository,
                 },
             ],
         }).compile();
 
         resourceService = module.get<ResourceService>(ResourceService);
-        resourceRepository = module.get<Repository<Resource>>(getRepositoryToken(Resource));
+        resourceRepository = module.get<Repository<Resource>>(Repository<Resource>);
     });
 
 
@@ -34,14 +32,14 @@ describe('ResourceService', () => {
 
 
     describe('getAllResource', () => {
-        it('should return an array of resources', async () => {
-            const spyFn = jest.spyOn(resourceService, 'getAllResource').mockResolvedValueOnce([[],1])
+        it('resourceService.getAllResource should call resourceRepoitory.getALLResource', async () => {
+            const resource = new Resource();
+            const spyFn = jest.spyOn(resourceService, 'getAllResource').mockResolvedValueOnce([[resource], 1])
             const result = await resourceService.getAllResource();
-
             expect(spyFn).toBeCalled();
             expect(spyFn).toBeCalledTimes(1);
             expect(spyFn).toBeCalledWith();
-            expect(result).toStrictEqual([[],1]);
+            expect(result).toStrictEqual([[resource],1]);
         });
 
         it('resourceService.getAllResource should call resourceRepository.findAndCount',async () => {
@@ -49,7 +47,7 @@ describe('ResourceService', () => {
         });
 
         it('findAndCount', () => {
-            const result = resourceRepository.findAndCount;
+            const result = resourceRepository.getAllResource;
             expect(typeof result).toBe('function');
         })
     });
