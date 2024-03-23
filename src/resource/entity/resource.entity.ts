@@ -45,7 +45,7 @@ export class Resource {
     @UpdateDateColumn()
     modified: Date;
 
-    @ManyToOne(() => User, User => User.id, {eager: false})
+    @ManyToOne(() => User, User => User.resource, {eager: false})
     @JoinColumn({name: "id"})
     user: User;
 
