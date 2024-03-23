@@ -11,6 +11,10 @@ import {
     ApiOperation
 } from '@nestjs/swagger';
 
+
+const NodeCache = require('node-cache');
+const cache = new NodeCache({ stdTTL: 100, checkperiod: 120 });
+
 @ApiTags('리소스 API')
 @Controller('resource')
 @UseGuards(AuthGuard())
@@ -23,13 +27,41 @@ export class ResourceController {
     @Get()
     @ApiOperation({summary: "리소스 목록 조회", description: "리소스 데이터만 조회"})
     getAllResource(@Query('page') page: number = 1): Promise<[Resource[], number]> {
-        return this.resourceService.getAllResource(page);
+        console.time('cache test')
+        const key: string = 'resource';
+        const cachedResource = cache.get(key);
+        if (cachedResource) {
+            console.info('캐싱된 데이터를 반환합니다.');
+            console.timeEnd('cache test')
+            return cachedResource;
+        } else {
+            console.info("캐시가 없습니다. 캐시를 세팅합니다.");
+            const result:  Promise<[Resource[], number]> = this.resourceService.getAllResource(page);
+            cache.set(key, result);
+            console.timeEnd('cache test');
+            return result;
+        }
     }
 
     @Get('/vin/list')
     @ApiOperation({summary: "리소스 & 와인 정보 목록 조회", description: "리소스 목록 (와인 정보 포함) 조회"})
     getResourceListWithVin(): Promise<Object> {
-        return this.resourceService.getResourceListWithVin()
+        const start = Date.now()
+        const key: string = 'resource';
+        const cachedResource = cache.get(key);
+        if (cachedResource) {
+            console.info('캐싱된 데이터를 반환합니다.');
+            const end = Date.now();
+            console.log(`응답 속도 : ${end - start} ms`)
+            return cachedResource;
+        } else {
+            console.info("캐시가 없습니다. 캐시를 세팅합니다.");
+            const result: Promise<Object> = this.resourceService.getResourceListWithVin()
+            cache.set(key, result, 60);
+            const end = Date.now();
+            console.log(`응답 속도 : ${end - start} ms`);
+            return result;
+        }
     }
 
     @Get('/get')
