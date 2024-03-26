@@ -1,9 +1,33 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Winebunker_Server
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# Introduction
 
-## Description
-기존 ExpressJS 로 구성된 WineBunker의 BackEnd를 NestJS로 Migration
+> 구입한 와인의 가격을 등록하고 공유할 수 있는 와인 가격 공유 플랫폼 입니다.
+>
+>
+>
+> ### Tech Stack
+>
+> - Nest.js (v 10.3.2)
+> - TypeORM
+> - Postgresql
+> 
+
+
+
+# Install & Setting
+
+- Install
+
+```bash
+npm install
+
+```
+
+- start
+
+```bash
+npm run start
+```
+---
+[Winebunker_Client](https://github.com/Yeom-YungIn/Winebunker_ReactJS)
