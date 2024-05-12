@@ -31,14 +31,10 @@ export class ResourceController {
         const key: string = 'resource';
         const cachedResource = cache.get(key);
         if (cachedResource) {
-            console.info('캐싱된 데이터를 반환합니다.');
-            console.timeEnd('cache test')
             return cachedResource;
         } else {
-            console.info("캐시가 없습니다. 캐시를 세팅합니다.");
             const result:  Promise<[Resource[], number]> = this.resourceService.getAllResource(page);
             cache.set(key, result);
-            console.timeEnd('cache test');
             return result;
         }
     }
@@ -50,16 +46,12 @@ export class ResourceController {
         const key: string = 'resource';
         const cachedResource = cache.get(key);
         if (cachedResource) {
-            console.info('캐싱된 데이터를 반환합니다.');
             const end = Date.now();
-            console.log(`응답 속도 : ${end - start} ms`)
             return cachedResource;
         } else {
-            console.info("캐시가 없습니다. 캐시를 세팅합니다.");
             const result: Promise<Object> = this.resourceService.getResourceListWithVin()
             cache.set(key, result, 60);
             const end = Date.now();
-            console.log(`응답 속도 : ${end - start} ms`);
             return result;
         }
     }
