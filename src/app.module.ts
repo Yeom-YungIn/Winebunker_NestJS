@@ -6,12 +6,14 @@ import {typeORMConfig} from "./configs/typeorm.config";
 import { VinModule } from './vin/vin.module';
 import {ConfigModule} from "@nestjs/config";
 import appConfig from "./configs/app.config";
+import authConfig from "./auth/config/auth.config";
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       load: [
-          appConfig
+          appConfig,
+          authConfig
       ],
       envFilePath: ['env/.env.production', 'env/.env.development'],
     }),
