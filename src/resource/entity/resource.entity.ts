@@ -46,7 +46,7 @@ export class Resource {
     modified: Date;
 
     @ManyToOne(() => User, User => User.resource, {eager: false})
-    @JoinColumn({name: "id"})
+    @JoinColumn({name: "user_name"})
     user: User;
 
     @ManyToOne(() => Vin, (Vin) => Vin.resource, {eager: false})

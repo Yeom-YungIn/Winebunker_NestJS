@@ -27,7 +27,7 @@ export class User{
     @UpdateDateColumn()
     modified: Date;
 
-    // @OneToMany(() => Resource, Resource => Resource.user, {eager: false})
-    // @JoinColumn({name: 'publisher_id'})
-    // resource: Resource[];
+    @OneToMany(() => Resource, Resource => Resource.user, {eager: false})
+    @JoinColumn({name: "id"})
+    resource: Resource[];
 }
