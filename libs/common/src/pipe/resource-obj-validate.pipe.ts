@@ -1,6 +1,7 @@
 import {ArgumentMetadata, BadRequestException, PipeTransform} from "@nestjs/common";
 import {isNumber} from "class-validator";
-import {Capacity} from "../enum/capacity.enum";
+
+import {Capacity} from "@app/common";
 
 export class ResourceObjValidatePipe implements PipeTransform {
 

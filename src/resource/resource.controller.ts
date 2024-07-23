@@ -2,12 +2,11 @@ import {Body, Controller, Delete, Get, ParseUUIDPipe, Patch, Post, Query, UseGua
 import {ResourceService} from "./resource.service";
 import {ResourceDto} from "./dto/resource.dto";
 import {Resource} from "./entity/resource.entity";
-import {ResourceObjValidatePipe} from "./pipe/resource-obj-validate.pipe";
 import {AuthGuard} from "@nestjs/passport";
 import {User} from "../auth/entity/user.entity";
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 
-import {GetUser} from "@app/common";
+import {GetUser, ResourceObjValidatePipe} from "@app/common";
 
 
 const NodeCache = require('node-cache');
