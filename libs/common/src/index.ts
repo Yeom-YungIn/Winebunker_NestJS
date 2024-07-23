@@ -1,2 +1,3 @@
-export * from './common.module';
+export * from './decorator';
+export * from './common.service';
 export * from './common.service';
