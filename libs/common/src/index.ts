@@ -1,3 +1,4 @@
+export * from './config';
 export * from './decorator';
 export * from './enum';
 export * from './pipe';

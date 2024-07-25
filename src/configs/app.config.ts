@@ -1,8 +1,9 @@
 import {IsEnum, IsInt, IsOptional, Max, Min} from "class-validator";
 import {registerAs} from "@nestjs/config";
-import validateConfig from "../utils/validate.config";
 import {AppConfig} from "./app.config.type";
+import validateConfig from "@app/common/config/validate.config";
 
+console.log(process.env.APP_PORT)
 enum Environment {
     Development = 'development',
     Production = 'production',
