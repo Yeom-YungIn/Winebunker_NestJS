@@ -3,15 +3,10 @@ import { ResourceService } from '../../src/resource/resource.service';
 import { Repository } from 'typeorm';
 import { Resource } from '../../src/resource/entity/resource.entity';
 import {getRepositoryToken} from "@nestjs/typeorm";
-import {NotFoundException} from "@nestjs/common";
-
-
-
 
 describe('ResourceService', () => {
     let resourceService: ResourceService;
     let resourceRepository: Repository<Resource>;
-
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
@@ -33,19 +28,20 @@ describe('ResourceService', () => {
         expect(resourceRepository).toBeDefined();
     });
 
-    describe('getAllResource', () => {
-        let resource, spyFn;
+    describe('리소스 전체 조회: getAllResource', () => {
+        let resource: Resource;
+        let spyFn: any;
         beforeEach(async () => {
             resource = new Resource();
             spyFn = jest.spyOn(resourceRepository, 'findAndCount').mockResolvedValueOnce([[resource], 1])
         })
 
-        it('getAllResource to be function', () => {
+        it('getAllResource 는 함수여야 합니다.', () => {
             const result = resourceService.getAllResource;
             expect(typeof result).toBe('function');
         })
 
-        it('resourceService.getAllResource should call resourceRepoitory.getALLResource', async () => {
+        it('resourceService.getAllResource 는 resourceRepository의 getALLResource를 호출해야 합니다.', async () => {
             const result = await resourceService.getAllResource();
             expect(spyFn).toBeCalled();
             expect(spyFn).toBeCalledTimes(1);
