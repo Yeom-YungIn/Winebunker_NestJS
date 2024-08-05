@@ -16,20 +16,6 @@ export class AuthService {
     ) {
     }
 
-    async signUp(authCredentialDto: AuthCredentialDto): Promise<User> {
-        let {userName, password} = authCredentialDto;
-        const salt = await bycrpt.genSalt();
-        password = await bycrpt.hash(password, salt);
-
-        const user = this.userRepository.create({
-            userName,
-            password,
-            issued: new Date(),
-            modified: new Date()
-        })
-        await this.userRepository.save(user);
-        return user;
-    }
 
     async generateAccessToken(authCredentialDto: AuthCredentialDto): Promise<Object> {
         const {userName, password} = authCredentialDto;

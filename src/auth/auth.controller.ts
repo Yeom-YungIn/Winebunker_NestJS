@@ -8,11 +8,6 @@ export class AuthController {
     constructor(private readonly authService: AuthService) {
     }
 
-    @Post('/signup')
-    signUp(@Body(ValidationPipe) authCredentialDto: AuthCredentialDto): Promise<User> {
-        return this.authService.signUp(authCredentialDto);
-    }
-
     @Post('/login')
     async logIn(@Body() authCredentialDto: AuthCredentialDto, @Res() res) {
         const accessToken = await this.authService.generateAccessToken(authCredentialDto);
