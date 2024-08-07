@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { User } from "./common/entity/user.entity";
-import { SignUpUserResponseDTO } from "./common/user.response.dto";
+import { SignUpUserResponseDTO } from "./common/dto/user.response.dto";
 export class UserService {
   constructor(
     @InjectRepository(User)
