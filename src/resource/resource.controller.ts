@@ -5,8 +5,8 @@ import {Resource} from "./entity/resource.entity";
 import {AuthGuard} from "@nestjs/passport";
 import {User} from "../auth/entity/user.entity";
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { GetUser, ResourceObjValidatePipe } from "@app/utils";
 
-import {GetUser, ResourceObjValidatePipe} from "@app/common";
 
 
 const NodeCache = require('node-cache');
