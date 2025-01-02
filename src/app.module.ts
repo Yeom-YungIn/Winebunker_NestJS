@@ -5,6 +5,7 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 import {typeORMConfig} from "./configs/typeorm.config";
 import { VinModule } from './vin/vin.module';
 import {ConfigModule} from "@nestjs/config";
+import { StatisticsModule } from './statistics/statistics.module';
 import appConfig from "./configs/app.config";
 import authConfig from "./auth/config/auth.config";
 @Module({
@@ -20,7 +21,8 @@ import authConfig from "./auth/config/auth.config";
     TypeOrmModule.forRoot(typeORMConfig),
     AuthModule,
     ResourceModule,
-    VinModule
+    VinModule,
+    StatisticsModule
   ],
   controllers: [],
   providers: [],
