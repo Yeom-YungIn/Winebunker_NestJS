@@ -1,4 +1,3 @@
-import { AuthCredentialDto } from "../auth/dto/auth-credential.dto";
 import bcrypt from "bcrypt";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";

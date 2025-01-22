@@ -3,9 +3,9 @@ import {ResourceService} from "./resource.service";
 import {ResourceDto} from "./dto/resource.dto";
 import {Resource} from "./entity/resource.entity";
 import {AuthGuard} from "@nestjs/passport";
-import {User} from "../auth/entity/user.entity";
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { GetUser, ResourceObjValidatePipe } from "@app/utils";
+import { User } from "../auth/common/entity/user.entity";
 
 
 

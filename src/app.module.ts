@@ -7,7 +7,7 @@ import { VinModule } from './vin/vin.module';
 import {ConfigModule} from "@nestjs/config";
 import { StatisticsModule } from './statistics/statistics.module';
 import appConfig from "./configs/app.config";
-import authConfig from "./auth/config/auth.config";
+import authConfig from "./auth/common/config/auth.config";
 @Module({
   imports: [
     ConfigModule.forRoot({

@@ -8,7 +8,7 @@ import {
     Unique,
     UpdateDateColumn
 } from "typeorm";
-import {Resource} from "../../resource/entity/resource.entity";
+import { Resource } from "../../../resource/entity/resource.entity";
 
 @Entity('user')
 export class User{

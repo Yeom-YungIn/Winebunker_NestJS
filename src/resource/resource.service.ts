@@ -3,7 +3,7 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {Resource} from "./entity/resource.entity";
 import {Repository} from "typeorm";
 import {ResourceDto} from "./dto/resource.dto";
-import {User} from "../auth/entity/user.entity";
+import { User } from "../user/common/entity/user.entity";
 
 @Injectable()
 export class ResourceService {
