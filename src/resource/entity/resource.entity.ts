@@ -7,8 +7,8 @@ import {
     UpdateDateColumn,
     JoinColumn
 } from "typeorm";
-import {Vin} from "../../vin/entity/vin.entity";
 import { User } from "../../user/common/entity/user.entity";
+import { Vin } from "../../vin/common/entity/vin.entity";
 
 @Entity('resource')
 export class Resource {

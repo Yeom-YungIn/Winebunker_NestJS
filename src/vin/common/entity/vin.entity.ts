@@ -1,5 +1,5 @@
 import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
-import {Resource} from "../../resource/entity/resource.entity";
+import { Resource } from "../../../resource/entity/resource.entity";
 
 @Entity()
 export class Vin {
