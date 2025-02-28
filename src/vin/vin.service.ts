@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
-import {Vin} from "./entity/vin.entity";
 import {Repository} from "typeorm";
-import {VinDto} from "./dto/vin.dto";
 import { Like } from 'typeorm';
+import { Vin } from "./common/entity/vin.entity";
+import { VinDto } from "./common/dto/vin.dto";
 
 @Injectable()
 export class VinService {

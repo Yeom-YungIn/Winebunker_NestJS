@@ -1,7 +1,7 @@
 import {Body, Controller, Delete, Get, Patch, Post, Query} from '@nestjs/common';
 import {VinService} from "./vin.service";
-import {Vin} from "./entity/vin.entity";
-import {VinDto} from "./dto/vin.dto";
+import { Vin } from './common/entity/vin.entity';
+import { VinDto } from "./common/dto/vin.dto";
 
 @Controller('vin')
 export class VinController {
