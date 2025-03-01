@@ -1,32 +1,35 @@
 import {
-    Column,
-    CreateDateColumn,
-    Entity,
-    JoinColumn,
-    OneToMany,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn
-} from "typeorm";
-import { Resource } from "../../../resource/entity/resource.entity";
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Resource } from '../../../resource/entity/resource.entity';
 
 @Entity('user')
-export class User{
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+export class User {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column({name: 'user_name'})
-    userName: string;
+  @Column({ name: 'user_name' })
+  userName: string;
 
-    @Column()
-    password: string;
+  @Column()
+  password: string;
 
-    @CreateDateColumn()
-    issued: Date;
+  @Column()
+  refreshToken: string;
 
-    @UpdateDateColumn()
-    modified: Date;
+  @CreateDateColumn()
+  issued: Date;
 
-    @OneToMany(() => Resource, Resource => Resource.user, {eager: false})
-    @JoinColumn({name: "id"})
-    resource: Resource[];
+  @UpdateDateColumn()
+  modified: Date;
+
+  @OneToMany(() => Resource, (Resource) => Resource.user, { eager: false })
+  @JoinColumn({ name: 'id' })
+  resource: Resource[];
 }
