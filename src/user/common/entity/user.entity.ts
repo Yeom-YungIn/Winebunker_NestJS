@@ -1,33 +1,20 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinColumn,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Resource } from '../../../resource/entity/resource.entity';
+import { DateEntity } from '@app/common/entity/date.entity';
 
 @Entity('user')
-export class User {
+export class User extends DateEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ name: 'user_name' })
+  @Column({ type: 'varchar', length: 20, comment: '이름' })
   userName: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 30, comment: '비밀번호' })
   password: string;
 
-  @Column()
+  @Column({ comment: 'refreshToken' })
   refreshToken: string;
-
-  @CreateDateColumn()
-  issued: Date;
-
-  @UpdateDateColumn()
-  modified: Date;
 
   @OneToMany(() => Resource, (Resource) => Resource.user, { eager: false })
   @JoinColumn({ name: 'id' })
