@@ -8,7 +8,7 @@ export class User extends DateEntity {
   id: string;
 
   @Column({ type: 'varchar', length: 20, comment: '이름' })
-  userName: string;
+  name: string;
 
   @Column({ type: 'varchar', length: 30, comment: '비밀번호' })
   password: string;

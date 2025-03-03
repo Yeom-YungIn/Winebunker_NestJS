@@ -11,15 +11,13 @@ export class UserService {
   ) {}
 
   async signUp(userSignUpDTO: UserSignUpDTO): Promise<SignUpUserResponseDTO> {
-    let { userName, password } = userSignUpDTO;
+    let { name, password } = userSignUpDTO;
 
     password = await this.getHashedPassword(password);
 
     const user: User = this.userRepository.create({
-      userName,
+      name,
       password,
-      issued: new Date(),
-      modified: new Date(),
     });
     await this.userRepository.save(user);
 

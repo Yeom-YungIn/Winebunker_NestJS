@@ -1,15 +1,15 @@
-import { IsString, Matches, MaxLength, MinLength } from "class-validator";
+import { IsString, Matches, MaxLength, MinLength } from 'class-validator';
 
 interface IUserSignUpDTO {
-  userName: string;
+  name: string;
   password: string;
 }
 
-export class UserSignUpDTO implements IUserSignUpDTO{
+export class UserSignUpDTO implements IUserSignUpDTO {
   @IsString()
   @MinLength(4)
   @MaxLength(20)
-  userName: string;
+  name: string;
 
   @IsString()
   @MinLength(4)
