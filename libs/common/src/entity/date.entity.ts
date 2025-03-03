@@ -1,12 +1,12 @@
 import { CreateDateColumn, DeleteDateColumn, UpdateDateColumn } from 'typeorm';
 
 export class DateEntity {
-  @CreateDateColumn({ type: 'timestamp', default: new Date(), comment: '생성일' })
+  @CreateDateColumn({ type: 'timestamp', comment: '생성일' })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamp', default: new Date(), comment: '수정일' })
+  @UpdateDateColumn({ type: 'timestamp', comment: '수정일' })
   updatedAt: Date;
 
-  @DeleteDateColumn({ type: 'timestamp', default: new Date(), comment: '삭제일' })
+  @DeleteDateColumn({ type: 'timestamp', comment: '삭제일' })
   deletedAt: Date;
 }

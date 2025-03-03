@@ -14,8 +14,8 @@ export class AuthService {
   async generateAccessToken(
     authCredentialDto: AuthCredentialDto,
   ): Promise<{ accessToken: string }> {
-    const { id, password } = authCredentialDto;
-    const user = await this.userService.findUserById(id);
+    const { name, password } = authCredentialDto;
+    const user = await this.userService.findUserById(name);
 
     if (!user) {
       throw new UnauthorizedException('Invalid username or password');
@@ -26,17 +26,17 @@ export class AuthService {
       throw new UnauthorizedException('Invalid username or password');
     }
 
-    const payload = { sub: id };
+    const payload = { sub: user.id };
     const accessToken = this.jwtService.sign(payload);
 
     return { accessToken };
   }
 
   async generateRefreshToken(authCredentialDto: AuthCredentialDto): Promise<string> {
-    const { id } = authCredentialDto;
-    const refreshToken: string = this.jwtService.sign({ sub: id }, { expiresIn: '7d' });
+    const { name } = authCredentialDto;
+    const refreshToken: string = this.jwtService.sign({ sub: name }, { expiresIn: '7d' });
 
-    await this.userService.updateUserRefreshToken(id, refreshToken);
+    await this.userService.updateUserRefreshToken(name, refreshToken);
 
     return refreshToken;
   }

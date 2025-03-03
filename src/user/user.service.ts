@@ -24,8 +24,8 @@ export class UserService {
     return SignUpUserResponseDTO.of(user);
   }
 
-  async findUserById(id: string) {
-    return await this.userRepository.findOneBy({ id });
+  async findUserById(name: string) {
+    return await this.userRepository.findOneBy({ name });
   }
 
   async updateUserRefreshToken(id: string, refreshToken: string) {
