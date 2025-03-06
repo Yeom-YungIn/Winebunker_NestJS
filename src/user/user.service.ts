@@ -1,36 +1,36 @@
-import bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './common/entity/user.entity';
-import { SignUpUserResponseDTO } from './common/dto/user.response.dto';
-import { UserSignUpDTO } from './common/dto/user.request.dto';
+import { SignUpUserResponseDTO } from './common/dto/response/user.response.dto';
+import { CreateUserDto } from './common/dto/request/create-user.dto';
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async signUp(userSignUpDTO: UserSignUpDTO): Promise<SignUpUserResponseDTO> {
-    let { name, password } = userSignUpDTO;
+  async createUser(createUserDto: CreateUserDto) {
+    const { name, password } = createUserDto;
 
-    password = await this.getHashedPassword(password);
+    const hashedPassword = await this.getHashedPassword(password);
 
     const user: User = this.userRepository.create({
       name,
-      password,
+      password: hashedPassword,
     });
-    await this.userRepository.save(user);
 
-    return SignUpUserResponseDTO.of(user);
+    await this.userRepository.save(user);
   }
 
-  async findUserById(name: string) {
+  async findUserByName(name: string) {
     return await this.userRepository.findOneBy({ name });
   }
 
   async updateUserRefreshToken(id: string, refreshToken: string) {
     await this.userRepository.update(id, { refreshToken });
   }
+
   async getHashedPassword(password: string): Promise<string> {
     const salt = await bcrypt.genSalt();
     return await bcrypt.hash(password, salt);

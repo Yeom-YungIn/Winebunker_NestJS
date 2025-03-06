@@ -1,15 +1,15 @@
 import { Body, Controller, Post, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthCredentialDto } from '../common/dto/request/auth-credential.dto';
+import { CreateUserDto } from '../../user/common/dto/request/create-user.dto';
+import { LoginDto } from './dto/request/login.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('/login')
-  async logIn(@Res() res, @Body() authCredentialDto: AuthCredentialDto) {
-    const accessToken = await this.authService.generateAccessToken(authCredentialDto);
-    const refreshToken = this.authService.generateRefreshToken(authCredentialDto);
+  async logIn(@Res() res, @Body() loginDto: LoginDto) {
+    const { accessToken, refreshToken } = await this.authService.login(loginDto);
 
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
@@ -18,6 +18,11 @@ export class AuthController {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.json(accessToken);
+    res.json({ accessToken });
+  }
+
+  @Post('signup')
+  async signUp(@Body() createUserDto: CreateUserDto) {
+    return this.authService.signUp(createUserDto);
   }
 }

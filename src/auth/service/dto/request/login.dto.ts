@@ -1,16 +1,14 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsString, Matches, MaxLength, MinLength } from 'class-validator';
 
-interface IUserSignUpDTO {
-  name: string;
-  password: string;
-}
-
-export class UserSignUpDTO implements IUserSignUpDTO {
+export class LoginDto {
+  @ApiProperty()
   @IsString()
   @MinLength(4)
   @MaxLength(20)
   name: string;
 
+  @ApiProperty()
   @IsString()
   @MinLength(4)
   @MaxLength(20)

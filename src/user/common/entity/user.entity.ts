@@ -10,10 +10,10 @@ export class User extends DateEntity {
   @Column({ type: 'varchar', length: 20, comment: '이름' })
   name: string;
 
-  @Column({ type: 'varchar', length: 30, comment: '비밀번호' })
+  @Column({ type: 'text', comment: '비밀번호' })
   password: string;
 
-  @Column({ comment: 'refreshToken' })
+  @Column({ comment: 'refreshToken', nullable: true })
   refreshToken: string;
 
   @OneToMany(() => Resource, (Resource) => Resource.user, { eager: false })
