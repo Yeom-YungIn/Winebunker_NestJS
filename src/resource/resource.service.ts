@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Resource } from './entity/resource.entity';
 import { Repository } from 'typeorm';
-import { ResourceDto } from './dto/resource.dto';
+import { CreateResourceDto } from './dto/create-resource.dto';
 import { User } from '../user/common/entity/user.entity';
 
 @Injectable()
@@ -54,14 +54,13 @@ export class ResourceService {
       .getRawMany();
   }
 
-  async saveResource(resourceDto: ResourceDto, user: User): Promise<Object> {
-    const { vinSn, vintage, price, store, capacity, description, purchaseDate } = resourceDto;
+  async saveResource(resourceDto: CreateResourceDto, user: User): Promise<Object> {
+    const { vinName, vintage, price, capacity, description, purchaseDate } = resourceDto;
 
     const resource = this.resourceRepository.create({
-      vinSn,
+      vinName,
       vintage,
       price,
-      store,
       capacity,
       description,
       purchaseDate,

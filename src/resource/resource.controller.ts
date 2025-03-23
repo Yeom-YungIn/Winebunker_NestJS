@@ -10,7 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ResourceService } from './resource.service';
-import { ResourceDto } from './dto/resource.dto';
+import { CreateResourceDto } from './dto/create-resource.dto';
 import { Resource } from './entity/resource.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
@@ -73,7 +73,7 @@ export class ResourceController {
 
   @Post('/save')
   @UseGuards(AuthGuard())
-  saveResource(@Body() resourceDto: ResourceDto, @GetUser() user: User): Promise<Object> {
+  saveResource(@Body() resourceDto: CreateResourceDto, @GetUser() user: User): Promise<Object> {
     return this.resourceService.saveResource(resourceDto, user);
   }
 
