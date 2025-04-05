@@ -16,6 +16,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { GetUser, ResourceObjValidatePipe } from '@app/utils';
 import { User } from '../user/common/entity/user.entity';
+import { UpdateResourceDto } from './dto/update-resource.dto';
 
 const NodeCache = require('node-cache');
 const cache = new NodeCache({ stdTTL: 100, checkperiod: 120 });
@@ -24,7 +25,8 @@ const cache = new NodeCache({ stdTTL: 100, checkperiod: 120 });
 @Controller('resource')
 @UseGuards(AuthGuard())
 export class ResourceController {
-  constructor(private readonly resourceService: ResourceService) {}
+  constructor(private readonly resourceService: ResourceService) {
+  }
 
   @Get()
   @ApiOperation({ summary: '리소스 목록 조회', description: '리소스 데이터만 조회' })
@@ -78,7 +80,7 @@ export class ResourceController {
   }
 
   @Patch('/update')
-  updateResource(@Body(ResourceObjValidatePipe) resourceDto: ResourceDto): Promise<Object> {
+  updateResource(@Body() resourceDto: UpdateResourceDto): Promise<Object> {
     return this.resourceService.updateResource(resourceDto);
   }
 

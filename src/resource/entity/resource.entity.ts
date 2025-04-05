@@ -12,8 +12,8 @@ import { Vin } from '../../vin/common/entity/vin.entity';
 
 @Entity('resource')
 export class Resource {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column({ name: 'vin_name' })
   vinName: string;

@@ -4,13 +4,16 @@ import { Resource } from './entity/resource.entity';
 import { Repository } from 'typeorm';
 import { CreateResourceDto } from './dto/create-resource.dto';
 import { User } from '../user/common/entity/user.entity';
+import { UpdateResourceDto } from './dto/update-resource.dto';
+import { assign } from 'lodash';
 
 @Injectable()
 export class ResourceService {
   constructor(
     @InjectRepository(Resource)
     private readonly resourceRepository: Repository<Resource>,
-  ) {}
+  ) {
+  }
 
   async getAllResource(page: number = 1): Promise<[Resource[], number]> {
     const pageSize: number = 5;
@@ -32,7 +35,7 @@ export class ResourceService {
       .getRawMany();
   }
 
-  async getResource(id: string): Promise<Resource> {
+  async getResourceById(id: number): Promise<Resource> {
     const found = await this.resourceRepository.findOneBy({ id });
 
     if (!found) {
@@ -72,35 +75,24 @@ export class ResourceService {
     return this.resourceRepository.save(resource);
   }
 
-  async updateResource(resourceDto: ResourceDto): Promise<Object> {
-    const { id, price, store, capacity, description, purchaseDate } = resourceDto;
+  async updateResource(updateResourceDto: UpdateResourceDto): Promise<void> {
+    const { id, ...updateData } = updateResourceDto;
 
-    const updateResource = await this.resourceRepository
-      .createQueryBuilder()
-      .update(Resource)
-      .set({
-        price,
-        store,
-        capacity,
-        description,
-        purchaseDate,
-      })
-      .where({
-        id,
-      })
-      .execute();
-    if (updateResource.affected) {
-      return { result: 'success' };
+    const resource = await this.resourceRepository.findOne({ where: { id } });
+    if (!resource) {
+      throw new Error('Resource not found');
     }
+
+    assign(resource, updateData);
+    await this.resourceRepository.save(resource);
   }
 
-  async deleteResource(id: string): Promise<Object> {
-    const found = await this.getResource(id);
+  async deleteResource(id: number): Promise<void> {
+    const resource = await this.getResourceById(id);
 
-    const deleteResource = await this.resourceRepository.delete({ id: found.id });
-    if (deleteResource.affected) {
-      return { result: 'success' };
-    }
+    if (!resource) throw new NotFoundException('Resource not found');
+
+    await this.resourceRepository.delete({ id: resource.id });
   }
 
   async userResource(user: User): Promise<Resource[]> {

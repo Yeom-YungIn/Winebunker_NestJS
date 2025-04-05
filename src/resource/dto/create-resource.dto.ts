@@ -1,5 +1,6 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsEnum, IsNumber, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { CapacityType } from '@app/common';
 
 export class CreateResourceDto {
   @IsNumber()
@@ -31,7 +32,7 @@ export class CreateResourceDto {
   )
   price: number;
 
-  @IsString()
+  @IsEnum(CapacityType)
   @ApiProperty(
     {
       description: '용량',
